@@ -79,6 +79,9 @@ fn build_tracy_client() {
             .warnings(false)
             .cpp(true);
         if let Ok(tool) = builder.try_get_compiler() {
+            if tool.is_like_clang() {
+                let _ = builder.flag("-flto=thin").flag("-march=native").flag("--target=x86_64-unknown-linux-gnu");
+            }
             if tool.is_like_gnu() || tool.is_like_clang() {
                 // https://github.com/rust-lang/cc-rs/issues/855
                 builder.flag("-std=c++11");

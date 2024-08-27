@@ -35,11 +35,22 @@ fn ops_alloc(c: &mut Criterion) {
     });
 }
 
+#[no_mangle]
+#[inline(never)]
+pub fn single_span() {
+    let _ = tracy_client::span!("single_span", 0);
+}
+
 fn ops_static(c: &mut Criterion) {
     let _client = tracy_client::Client::start();
     c.bench_function("span_callstack/0", |bencher| {
         bencher.iter(|| {
             let _ = tracy_client::span!("some_name", 0);
+        });
+    });
+    c.bench_function("span_callstack/s", |bencher| {
+        bencher.iter(|| {
+            single_span()
         });
     });
     c.bench_function("span_callstack/100", |bencher| {

@@ -1,0 +1,10 @@
+[build]
+rustflags = [
+    "-Clinker-plugin-lto",
+    "-Clink-arg=-fuse-ld=lld",
+    "-Ctarget-cpu=native"
+] 
+
+[env]
+CC = "clang"
+CXX = "clang++"
